@@ -16,7 +16,6 @@ def create_bizCards(contact_type, quantity):
             stanowisko = fake.job()
             firma = fake.company()
             telefon_sluzbowy = fake.phone_number()
-
             
             
 
