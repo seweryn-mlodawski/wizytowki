@@ -69,3 +69,4 @@ for contact in business_contacts:
     print()
 
 #dla każdej z list dane generowane są osobno i wyświetlane osobno - można to poprawić aby po wygenerowaniu były powtarzane w opcji wizytówek biznesowych
+# wersja pliku z powyższym kodem na branchu "only_1_data" 
