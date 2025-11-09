@@ -28,14 +28,14 @@ class BusinessContact(BaseContact): # klasa dziedzicząca po BaseContact z dodat
         self.telefon_sluzbowy = telefon_sluzbowy
 
     def contact(self):
-        print(f"Wybieram numer: {self.telefon_sluzbowy} i dzwonię do: {self.imie} {self.nazwisko} z firmy {self.firma} na stanowisku {self.stanowisko}")
+        print(f"Wybieram numer służbowy: {self.telefon_sluzbowy} i dzwonię do: {self.imie} {self.nazwisko}, z firmy {self.firma}, stanowisko - {self.stanowisko}")
 
     def __str__(self):
         return (f"{self.imie} {self.nazwisko}, Tel prywatny: {self.telefon}, Email: {self.email}, "
                 f"Stanowisko: {self.stanowisko}, Firma: {self.firma}, Tel służbowy: {self.telefon_sluzbowy}")
 
-def create_bizCards(contact_type, quantity):
-    biz_Cards = []
+def create_contacts(contact_type, quantity):
+    contacts = []
     for _ in range(quantity):
         imie = fake.first_name()
         nazwisko = fake.last_name()
@@ -43,16 +43,16 @@ def create_bizCards(contact_type, quantity):
         email = fake.email()
 
         if contact_type == 'base':
-            biz_Cards.append(BaseContact(imie, nazwisko, telefon, email))
+            contacts.append(BaseContact(imie, nazwisko, telefon, email))
         elif contact_type == 'business':
             stanowisko = fake.job()
             firma = fake.company()
             telefon_sluzbowy = fake.phone_number()
-            biz_Cards.append(BusinessContact(imie, nazwisko, telefon, email, stanowisko, firma, telefon_sluzbowy))
-    return biz_Cards
+            contacts.append(BusinessContact(imie, nazwisko, telefon, email, stanowisko, firma, telefon_sluzbowy))
+    return contacts
 
-base_contacts = create_bizCards('base', 5)
-business_contacts = create_bizCards('business', 5)
+base_contacts = create_contacts('base', 5) # tworzenie 5 wizytówek podstawowych
+business_contacts = create_contacts('business', 5) # tworzenie 5 wizytówek biznesowych
 
 # pętla wyświetlająca wszystkie wizytówki
 print("\nWizytówki - dane podstawowe:\n")
