@@ -20,23 +20,43 @@ class BaseContact:
 
     
 class BusinessContact(BaseContact): # klasa dziedzicząca po BaseContact z dodatkowymi danymi biznesowymi
+        Metoda wyświetlająca komunikat: 
+        'Wybieram numer +48... i dzwonię do Jan Kowalski'
+        Dla klasy bazowej wybiera numer prywatny.
+        """
+        print(f"Wybieram numer {self.telefon} i dzwonię do {self.imie} {self.nazwisko}")
+
+    @property
+    def label_length(self):
+        """Zwraca długość imienia i nazwiska (w tym spacja)."""
+        return len(f"{self.imie} {self.nazwisko}")
+
+class BusinessContact(BaseContact):
     def __init__(self, imie, nazwisko, telefon, email, stanowisko, firma, telefon_sluzbowy):
-        super().__init__(imie, nazwisko, telefon, email) # wywołanie konstruktora klasy bazowej
-        # dodatkowe atrybuty dla danych biznesowych
-        self.stanowisko = stanowisko 
+        """Inicjalizacja rozszerzonych danych biznesowych."""
+        super().__init__(imie, nazwisko, telefon, email)
+        self.stanowisko = stanowisko
         self.firma = firma
         self.telefon_sluzbowy = telefon_sluzbowy
 
     def contact(self):
-        print(f"Wybieram numer służbowy: {self.telefon_sluzbowy} i dzwonię do: {self.imie} {self.nazwisko}, z firmy {self.firma}, stanowisko - {self.stanowisko}")
+        """
+        Dla klasy biznesowej wybiera numer służbowy.
+        """
+        print(f"Wybieram numer {self.telefon_sluzbowy} i dzwonię do {self.imie} {self.nazwisko}")
 
-    def __str__(self):
-        return (f"{self.imie} {self.nazwisko}, Tel prywatny: {self.telefon}, Email: {self.email}, "
-                f"Stanowisko: {self.stanowisko}, Firma: {self.firma}, Tel służbowy: {self.telefon_sluzbowy}")
 
 def create_contacts(contact_type, quantity):
+    """
+    Funkcja tworząca losowe wizytówki.
+    Parametry:
+    - contact_type: rodzaj wizytówki ('base' lub 'business')
+    - quantity: ilość wizytówek do wygenerowania
+    """
     contacts = []
+    
     for _ in range(quantity):
+        # Generowanie danych wspólnych
         imie = fake.first_name()
         nazwisko = fake.last_name()
         telefon = fake.phone_number()
@@ -44,29 +64,31 @@ def create_contacts(contact_type, quantity):
 
         if contact_type == 'base':
             contacts.append(BaseContact(imie, nazwisko, telefon, email))
+            
         elif contact_type == 'business':
+            # Generowanie danych tylko dla biznesu
             stanowisko = fake.job()
             firma = fake.company()
             telefon_sluzbowy = fake.phone_number()
             contacts.append(BusinessContact(imie, nazwisko, telefon, email, stanowisko, firma, telefon_sluzbowy))
+            
     return contacts
 
-base_contacts = create_contacts('base', 5) # tworzenie 5 wizytówek podstawowych
-business_contacts = create_contacts('business', 5) # tworzenie 5 wizytówek biznesowych
+# --- Blok uruchomieniowy  ---
 
-# pętla wyświetlająca wszystkie wizytówki
-print("\nWizytówki - dane podstawowe:\n")
-for contact in base_contacts:
-    print(contact)
-    contact.contact()
-    print(f"Długość etykiety: {contact.label_length}")
-    print()
-print("\nWizytówki - dane biznesowe:\n")
-for contact in business_contacts:
-    print(contact)
-    contact.contact()
-    print(f"Długość etykiety: {contact.label_length}")
-    print()
+if __name__ == "__main__":
+    # Testowanie generowania wizytówek base
+    print("--- Wizytówki Podstawowe ---")
+    base_cards = create_contacts('base', 3)
+    for card in base_cards:
+        card.contact()
+        print(f"Długość etykiety: {card.label_length}")
+        print("-" * 10)
 
-#dla każdej z list dane generowane są osobno i wyświetlane osobno - można to poprawić aby po wygenerowaniu były powtarzane w opcji wizytówek biznesowych
-# wersja pliku z powyższym kodem na branchu "only_1_data" 
+    # Testowanie generowania wizytówek business
+    print("\n--- Wizytówki Biznesowe ---")
+    business_cards = create_contacts('business', 3)
+    for card in business_cards:
+        card.contact()
+        print(f"Długość etykiety: {card.label_length}")
+        print("-" * 10)
